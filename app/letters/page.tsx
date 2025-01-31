@@ -36,9 +36,16 @@ export default function LettersPage() {
           <p className="text-center text-muted-foreground">No hay cartas guardadas.</p>
         ) : (
           <ul className="space-y-4">
-            {letters.map((letter: { id: number; content: string }) => (
+            {letters.map((letter: { id: number; content: string; image?: string }) => (
               <li key={letter.id} className="p-4 border rounded-lg shadow-sm bg-background">
                 <p className="text-muted-foreground">{letter.content}</p>
+                {letter.image && (
+                  <img
+                    src={letter.image}
+                    alt="Carta adjunta"
+                    className="mt-2 rounded-lg shadow-md max-w-full"
+                  />
+                )}
               </li>
             ))}
           </ul>
