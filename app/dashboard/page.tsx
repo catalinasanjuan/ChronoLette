@@ -5,33 +5,36 @@ import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (!user) {
-      router.push("/login");
-    } else {
-      setIsAuthenticated(true);
-    }
+    const checkSession = async () => {
+      const res = await fetch("/api/session");
+      const data = await res.json();
+
+      if (!res.ok) {
+        router.push("/login"); // Redirigir si no hay sesión
+      } else {
+        setUser(data.user);
+      }
+    };
+
+    checkSession();
   }, [router]);
 
-  if (!isAuthenticated) {
+  if (!user) {
     return <p className="text-center mt-20">Redirigiendo a login...</p>;
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center vintage-paper">
-      <h1 className="handwritten text-4xl text-primary mb-6">
-        Bienvenido al Dashboard 🎉
-      </h1>
-
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <h1 className="text-3xl font-bold">Bienvenido, {user.name} 🎉</h1>
       <button
-        onClick={() => {
-          localStorage.removeItem("user");
+        onClick={async () => {
+          await fetch("/api/logout", { method: "POST" });
           router.push("/login");
         }}
-        className="px-6 py-2 bg-destructive text-white rounded-lg hover:bg-destructive/90 transition"
+        className="mt-6 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
       >
         Cerrar Sesión
       </button>

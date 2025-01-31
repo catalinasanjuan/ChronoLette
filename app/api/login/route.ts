@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { serialize } from "cookie";
 
 const prisma = new PrismaClient();
 
@@ -7,7 +9,7 @@ export async function POST(req: Request) {
   try {
     const { email, password } = await req.json();
 
-    // Verificar si el usuario existe en la base de datos
+    // Buscar el usuario en la base de datos
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
@@ -25,12 +27,28 @@ export async function POST(req: Request) {
       });
     }
 
+    // Generar JWT
+    const token = jwt.sign(
+      { id: user.id, email: user.email, name: user.name },
+      process.env.JWT_SECRET as string, // Clave secreta del .env
+      { expiresIn: "7d" }
+    );
+
+    // Guardar el token en una cookie
+    const serializedCookie = serialize("authToken", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+      maxAge: 7 * 24 * 60 * 60, // 7 días
+    });
+
     return new Response(
-      JSON.stringify({
-        message: "Inicio de sesión exitoso",
-        user: { id: user.id, name: user.name, email: user.email },
-      }),
-      { status: 200 }
+      JSON.stringify({ message: "Inicio de sesión exitoso", user }),
+      {
+        status: 200,
+        headers: { "Set-Cookie": serializedCookie },
+      }
     );
   } catch (error) {
     return new Response(
