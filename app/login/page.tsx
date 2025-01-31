@@ -23,7 +23,7 @@ export default function LoginPage() {
 
     if (res.ok) {
       localStorage.setItem("user", JSON.stringify(data.user));
-      router.push("/dashboard");
+      router.push("/");
     } else {
       setError(data.error || "Error al iniciar sesión");
     }
