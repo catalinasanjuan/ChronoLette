@@ -26,3 +26,16 @@ export async function POST(req: Request) {
     );
   }
 }
+export async function GET() {
+  try {
+    const letters = await prisma.letter.findMany({
+      orderBy: { id: "desc" }, // Ordenar por más recientes primero
+    });
+
+    return new Response(JSON.stringify({ letters }), { status: 200 });
+  } catch (error) {
+    return new Response(JSON.stringify({ error: "Error al obtener las cartas." }), {
+      status: 500,
+    });
+  }
+}

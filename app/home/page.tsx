@@ -17,8 +17,6 @@ export default function Home() {
           <h1 className="font-sans text-5xl md:text-7xl mb-6 text-primary">
             Querido yo futuro...
           </h1>
-
-
           <p className="font-serif italic text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             "El tiempo es un río que me arrebata, pero yo soy el río; es un tigre que me destroza, pero yo soy el tigre..."
             <span className="crete-round mt-2">- Jorge Luis Borges</span>
@@ -27,11 +25,14 @@ export default function Home() {
             <Button size="lg" className="text-lg px-8" asChild>
               <Link href="/write">Escribir una Carta</Link>
             </Button>
-
+          </div>
+          <div className="flex gap-6 justify-center mt-4">
+            <Button size="lg" variant="outline" className="text-lg px-8" asChild>
+              <Link href="/letters">Ver Cartas</Link>
+            </Button>
           </div>
         </div>
       </div>
-
       {/* Features Section */}
       <div className="container mx-auto px-4 py-16">
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
