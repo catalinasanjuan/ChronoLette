@@ -9,40 +9,35 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-
-  
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-  
+
     if (email === "admin@example.com" && password === "123456") {
-      localStorage.setItem("user", JSON.stringify({ email })); // Guardar sesión
-      router.push("/dashboard"); // Redirigir
+      localStorage.setItem("user", JSON.stringify({ email }));
+      router.push("/dashboard");
     } else {
       setError("Correo o contraseña incorrectos");
     }
   };
 
-  
-
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-semibold text-center text-gray-700 mb-4">
+    <div className="min-h-screen flex items-center justify-center vintage-paper">
+      <div className="bg-card shadow-lg p-8 rounded-lg max-w-md w-full border border-primary/20">
+        <h2 className="handwritten text-3xl text-primary text-center mb-6">
           Iniciar Sesión
         </h2>
+
         {error && <p className="text-red-500 text-center">{error}</p>}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-muted-foreground">
               Correo Electrónico
             </label>
             <input
               type="email"
-              className="mt-1 w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+              className="mt-1 w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring focus:ring-primary/40"
               placeholder="correo@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -51,12 +46,12 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-muted-foreground">
               Contraseña
             </label>
             <input
-              type="Contraseña"
-              className="mt-1 w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+              type="password"
+              className="mt-1 w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring focus:ring-primary/40"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -66,7 +61,7 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
+            className="w-full bg-primary text-primary-foreground py-2 rounded-lg hover:bg-primary/90 transition"
           >
             Iniciar Sesión
           </button>
@@ -74,7 +69,7 @@ export default function LoginPage() {
 
         <p className="text-sm text-center mt-4">
           ¿No tienes cuenta?{" "}
-          <a href="/register" className="text-blue-500 hover:underline">
+          <a href="/register" className="text-primary hover:underline">
             Regístrate
           </a>
         </p>
