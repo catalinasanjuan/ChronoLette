@@ -9,22 +9,24 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
-    // Obtener usuarios de localStorage
-    const users = JSON.parse(localStorage.getItem("users") || "[]");
-    const user = users.find((u: any) => u.email === email && u.password === password);
+    const res = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-    if (!user) {
-      setError("Correo o contraseña incorrectos");
-      return;
+    const data = await res.json();
+
+    if (res.ok) {
+      localStorage.setItem("user", JSON.stringify(data.user));
+      router.push("/dashboard");
+    } else {
+      setError(data.error || "Error al iniciar sesión");
     }
-
-    // Guardar sesión y redirigir
-    localStorage.setItem("user", JSON.stringify(user));
-    router.push("/dashboard");
   };
 
   return (

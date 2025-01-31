@@ -9,30 +9,27 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
-    if (!name || !email || !password) {
-      setError("Todos los campos son obligatorios");
-      return;
+    const res = await fetch("/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password }),
+    });
+
+    const data = await res.json();
+    setLoading(false);
+
+    if (res.ok) {
+      router.push("/login");
+    } else {
+      setError(data.error || "Error al registrar");
     }
-
-    // Obtener usuarios existentes en localStorage
-    const users = JSON.parse(localStorage.getItem("users") || "[]");
-
-    if (users.find((user: any) => user.email === email)) {
-      setError("Este correo ya está registrado");
-      return;
-    }
-
-    const newUser = { name, email, password };
-    localStorage.setItem("users", JSON.stringify([...users, newUser]));
-
-    // Guardar usuario en sesión y redirigir al Dashboard automáticamente
-    localStorage.setItem("user", JSON.stringify(newUser));
-    router.push("/dashboard");
   };
 
   return (
@@ -90,8 +87,9 @@ export default function RegisterPage() {
           <button
             type="submit"
             className="w-full bg-primary text-primary-foreground py-2 rounded-lg hover:bg-primary/90 transition"
+            disabled={loading}
           >
-            Registrarse
+            {loading ? "Registrando..." : "Registrarse"}
           </button>
         </form>
 
