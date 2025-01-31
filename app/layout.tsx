@@ -10,7 +10,7 @@ const poppins = Poppins({ subsets: ['latin'], weight: ['400', '700'] });
 const dancingScript = Dancing_Script({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Querido Yo Futuro | Letters to Future Self',
+  title: 'ChronoLetter',
   description: 'Un espacio íntimo para escribir cartas a tu yo del futuro - Un diario digital para tus pensamientos y memorias.',
 };
 
