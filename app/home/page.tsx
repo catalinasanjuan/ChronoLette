@@ -27,9 +27,7 @@ export default function Home() {
             <Button size="lg" className="text-lg px-8" asChild>
               <Link href="/write">Escribir una Carta</Link>
             </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8" asChild>
-              <Link href="/login">Iniciar Sesión</Link>
-            </Button>
+
           </div>
         </div>
       </div>
