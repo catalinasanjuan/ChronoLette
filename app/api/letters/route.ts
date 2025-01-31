@@ -7,15 +7,22 @@ export async function POST(req: Request) {
     const { content } = await req.json();
 
     if (!content) {
-      return new Response(JSON.stringify({ error: "La carta no puede estar vacía" }), { status: 400 });
+      return new Response(JSON.stringify({ error: "El contenido no puede estar vacío." }), {
+        status: 400,
+      });
     }
 
     const newLetter = await prisma.letter.create({
       data: { content },
     });
 
-    return new Response(JSON.stringify(newLetter), { status: 201 });
+    return new Response(JSON.stringify({ message: "Carta guardada.", letter: newLetter }), {
+      status: 201,
+    });
   } catch (error) {
-    return new Response(JSON.stringify({ error: "Error al guardar la carta" }), { status: 500 });
+    return new Response(
+      JSON.stringify({ error: "Error al guardar la carta." }),
+      { status: 500 }
+    );
   }
 }
